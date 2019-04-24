@@ -1,9 +1,11 @@
-wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg
+/*
+ * wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg
 wget https://pjreddie.com/media/files/yolov3.weights
 wget https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
 
 OpenCV >= 4.0.0 : g++ `pkg-config --cflags opencv4` `pkg-config --libs opencv4` yoloimg.cpp -o  yoloimg
 OpenCV <  4.0.0 : g++ `pkg-config --cflags opencv` `pkg-config --libs opencv` yoloimg.cpp -o  yoloimg
+*/
 
 #include <fstream>
 #include <sstream>

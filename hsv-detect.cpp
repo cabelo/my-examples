@@ -7,8 +7,6 @@
 OpenCV >= 4.0.0 : g++ `pkg-config --cflags opencv4` `pkg-config --libs opencv4` hsv-detect.cpp -o hsv-detect
 OpenCV <  4.0.0 : g++ `pkg-config --cflags opencv` `pkg-config --libs opencv` hsv-detect.cpp -o hsv-detect
 */
-#include <iostream>
-
 #include <opencv2/dnn.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>

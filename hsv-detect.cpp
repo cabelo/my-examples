@@ -3,6 +3,7 @@
   @author Alessandro de Oliveira Faria (A.K.A. CABELO)
   @brief Example of how to identify object with the HSV color space. With the example in /samples/cpp/tutorial_code/ImgProc/Threshold_inRange.cpp, we can use the values lowH, lowS, lowV, highH, highS, highV in the inRange function. See the example in this video: https://www.youtube.com/watch?v=oPOv4P1EqTI . Questions and suggestions email to: Alessandro de Oliveira Faria cabelo[at]opensuse[dot]org or OpenCV Team.
   @date Aug 20, 2020
+  @example /hsv-detect --obj1Lower="107 119 0" --obj1Upper="136 234 162" --label2="Bola"
 
 OpenCV >= 4.0.0 : g++ `pkg-config --cflags opencv4` `pkg-config --libs opencv4` hsv-detect.cpp -o hsv-detect
 OpenCV <  4.0.0 : g++ `pkg-config --cflags opencv` `pkg-config --libs opencv` hsv-detect.cpp -o hsv-detect
@@ -10,6 +11,7 @@ OpenCV <  4.0.0 : g++ `pkg-config --cflags opencv` `pkg-config --libs opencv` hs
 #include <opencv2/dnn.hpp>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
+#include <iostream>
 
 std::string keys =
     "{ help  h     | | Print help message. }"
@@ -23,6 +25,7 @@ std::string keys =
 
 using namespace cv;
 using namespace std;
+
 
 Scalar calcLargestArea(Mat mask, vector<vector<Point>> &contours)
 {
@@ -70,9 +73,14 @@ int main(int argc, char** argv)
 	float _x,_y,radius;
 	Scalar result;
 	Point2f center,_center;
+	int iLastX,iLastY = -1;
+
 
 	VideoCapture cap;
 	cap.open(0);
+
+	cap>>frame;
+	Mat imgLines = Mat::zeros( frame.size(), CV_8UC3 );
 	while(true)
 	{
 		cap>>frame;
@@ -91,16 +99,30 @@ int main(int argc, char** argv)
 			_x = (m.m10/m.m00);
 			_y = (m.m01/m.m00);
 			_center = Point2f(_x,_y);
+
+			if (iLastX >= 0 && iLastY >= 0 && _x >= 0 && _y >= 0)
+			{
+				line(imgLines,Point(iLastX,iLastY),Point(_x,_y),Scalar(0,0,255),2);
+			}
+			iLastX = _x;
+			iLastY = _y;
+
 			if(radius>10)
 			{
 				circle(frame, center, cvRound(radius), Scalar(0, 255, 255), 2, LINE_AA);
 				circle(frame, _center, 5, Scalar(255,0,0), -1, LINE_AA);
 			}
+			
+			frame = frame + imgLines;
 			imshow("image",frame);
 			cv::displayOverlay("image",labels[testObj],2000); 
 		}
 		else
-		imshow("image",frame);
+		{
+			imshow("image",frame);
+			imgLines = Mat::zeros( frame.size(), CV_8UC3 );
+
+		}
 		if (waitKey(5) >= 0) break;
 	}
 	cap.release();

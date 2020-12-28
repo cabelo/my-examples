@@ -6,4 +6,3 @@ ela.cpp : Error Level Analysis (ELA) permits identifying areas within an image t
 invisibility.cpp : This program demonstrates the invisibility effect with OpenCV.
 
 hsv-detect.cpp : How to use the hsv color space to identify objects.
-
